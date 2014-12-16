@@ -34,7 +34,14 @@ blades_room = {
     'intro' : """
  You enter a room with cleaving blades hanging from the ceiling. 
 The blades are moving about, blocking the way to the other doors.
-It seems bloody dangerous, but perhaps you can bypass the blades,
+It seems bloody dangerous, but perhaps you can jump through the blades,
 if you are quick enough...
+""",
+    'death' : """
+ As you try to pass through the blades, a sudden movement cleaves your
+body in half.
+""",
+    'pass_through' : """
+You narrowly make it through, your heart is racing.
 """
 }

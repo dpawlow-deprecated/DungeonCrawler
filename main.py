@@ -13,11 +13,13 @@ class Engine(object):
     def play(self):
         current_room = self.room_map.starting_room
         exit_room = self.room_map.rooms[(0, 4)]
+        prev_room_coord = (2, 2)
 
         while current_room != exit_room or hero.has_key == False:
-            next_room_coord = current_room.enter()
+            next_room_coord = current_room.enter(prev_room_coord)
+            prev_room_coord = current_room.coord
             current_room = self.room_map.next_room(next_room_coord)
-        
+            
 
 class Room(object):
     """Template for rooms. Contains exit() for rooms with four doors"""
@@ -39,6 +41,11 @@ class Room(object):
             instance = room()
             return instance.exit()
 
+class Death(Room):
+
+    def enter(self, previous_room):
+        print "you ded"
+        exit(1)
 
 class StartingRoom(Room):
 
@@ -46,7 +53,7 @@ class StartingRoom(Room):
         self.coord = (2, 2)
         self.first_time = True
 
-    def enter(self):
+    def enter(self, prev):
         if self.first_time == True:
             self.first_time = False
             print text.starting_room['intro_first_time']
@@ -85,11 +92,31 @@ class BladesRoom(Room):
     def __init__(self):
         self.coord = (2, 1)
 
-    def enter(self):
+    def enter(self, previous_room):
         print text.blades_room['intro']
-        print "run away"
-        return self.prev_coord
+        enter_menu = ["Try to scurry through the blades.", "Run away!"]
+        menu = fn.Menu()
+        choice = menu.generate(enter_menu, "What do you do?")
 
+        if choice == '1':
+            roll = randint(1, 20) + hero.stats['agility']
+
+            if roll < 14:
+                print text.blades_room['death']
+                return (-1, -1)
+            else:
+                print text.blades_room['pass_through']
+                return self.exit()
+        
+        elif choice == '2':
+            return previous_room
+        else:
+            self.enter(previous_room)
+
+    def exit(self):
+        exit_menu = ["North Door", "East Door", "South Door", "West Door"]
+        return super(BladesRoom, self).exit(self.coord, exit_menu,
+         BladesRoom)
 
 class GoblinRoom(Room):
 
@@ -113,7 +140,7 @@ class HealthRoom(Room):
         self.coord = (2, 3)
         self.bottle_full = True
 
-    def enter(self):
+    def enter(self, prev):
         if self.bottle_full == True:
             print text.health_room['intro_bottle_full']
             enter_menu = ["Drink from the bottle.", "Exit the room."]
@@ -160,6 +187,7 @@ class Map(object):
         (3, 1) : HunterRoom(),
         (3, 2) : SwordRoom(),
         (3, 3) : ZombieRoom(),
+        (-1, -1) : Death()
     }
 
     def __init__(self, starting_room):
@@ -183,7 +211,8 @@ stats = {
     'str' : 3,
     'Health' : 14,
     'MaxHealth' : 120,
-    'has_key' : False
+    'has_key' : False,
+    'agility' : randint (-3, 3)
 }
 hero = fn.Character('pepe', stats)
 

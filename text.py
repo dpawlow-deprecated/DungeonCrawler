@@ -37,11 +37,42 @@ The blades are moving about, blocking the way to the other doors.
 It seems bloody dangerous, but perhaps you can jump through the blades,
 if you are quick enough...
 """,
+    'intro_returning' : "Oh, bloody hell! Not the blades again!",
     'death' : """
  As you try to pass through the blades, a sudden movement cleaves your
 body in half.
 """,
     'pass_through' : """
 You narrowly make it through, your heart is racing.
+"""
+}
+
+sword_room = {
+    'intro' : """
+ You enter a room with walls covered in old and rusty armor. There are
+broken weapons lying around everywhere. A little reflection catches your
+eye, it is a sheathed sword! And it seems strangely untouched by the
+rust that ate the other weapons.
+Now you have a sword! It will surely be of some use.
+""",
+    'intro_returning' : """
+ You enter to the old armory once again. So many unanswered questions.
+Who owned this place?
+"""
+}
+
+zombie_room = {
+    'intro_alive' : """
+ You feel a unbearable smell as you enter the room. It's rotten, putrid
+and rancid. As you cover your nose with your sleeve you see movement.
+There is a zombie in here!
+""",
+    'returning_alive' : """
+ You return to the awful smelling room.
+The damn zombie is still here!
+""",
+    'returning_dead' : """
+ You are back once again in the rotten room.
+Covering your nose, you pass through it as quickly as you can.
 """
 }

@@ -4,22 +4,6 @@ from random import randint
 import functions as fn
 import text
 
-class Engine(object):
-    """Runs the game by handing the next room to the player"""
-
-    def __init__(self, room_map):
-        self.room_map = room_map
-
-    def play(self):
-        current_room = self.room_map.starting_room
-        exit_room = self.room_map.rooms[(0, 4)]
-        prev_room_coord = (2, 2)
-
-        while current_room != exit_room or hero.has_key == False:
-            next_room_coord = current_room.enter(prev_room_coord)
-            prev_room_coord = current_room.coord
-            current_room = self.room_map.next_room(next_room_coord)
-            
 
 class Room(object):
     """Template for rooms. Contains exit() for rooms with four doors"""
@@ -44,7 +28,7 @@ class Room(object):
 class Death(Room):
 
     def enter(self, previous_room):
-        print "you ded"
+        print "You died."
         exit(1)
 
 class StartingRoom(Room):
@@ -81,6 +65,22 @@ class SwordRoom(Room):
 
     def __init__(self):
         self.coord = (3, 2)
+
+    def enter(self, previous_room):
+        if hero.stats['sword'] == False:
+            print text.sword_room['intro']
+            hero.stats['sword'] = True
+            hero.stats['dmg'] += 5
+            return self.exit()
+        else:
+            print text.sword_room['intro_returning']
+            return self.exit()
+
+    def exit(self):
+        exit_menu = ["North Door", "East Door", "South Door", "West Door"]
+        return super(SwordRoom, self).exit(self.coord, exit_menu,
+         SwordRoom)
+
 
 class HunterRoom(Room):
 
@@ -148,7 +148,7 @@ class HealthRoom(Room):
             choice = menu.generate(enter_menu, "What do you do?")
 
             if choice == '1':
-                hero.stats['Health'] = hero.stats['MaxHealth']
+                hero.stats['health'] = hero.stats['maxHealth']
                 print text.health_room['drink_potion']
                 self.bottle_full = False 
                 return self.exit()           
@@ -166,8 +166,53 @@ class HealthRoom(Room):
 
 class ZombieRoom(Room):
 
+    zombie_stats = {
+    'dmg' : 1,
+    'health' : 14,
+    'initiative' : 20,
+    'accuracy' : 20,
+    'alive' : True
+    }
+
     def __init__(self):
         self.coord = (3, 3)
+        self.zombie = fn.Character('Bob the Zombie', self.zombie_stats)
+        self.first_time = True
+
+    def enter(self, previous_room):
+        if self.zombie.stats['alive'] and self.first_time == True:
+            print text.zombie_room['intro_alive']
+            self.first_time = False
+            return self.choose_action(previous_room)
+        elif self.zombie.stats['alive'] and self.first_time == False:
+            print text.zombie_room['returning_alive']
+            return self.choose_action(previous_room)
+        else:
+            print text.zombie_room['returning_dead']
+            return self.exit()
+
+    def choose_action(self, previous_room):
+        choice_ls = ['Fight!', 'Run away!']
+        menu = fn.Menu()
+        choice = menu.generate(choice_ls, 'What do you do?')
+
+        if choice == '1':
+            combat = fn.Combat(hero, self.zombie, self.choose_action,
+             previous_room)
+            combat.rounds()
+        elif choice == '2':
+            return previous_room
+        else:
+            return self.choose_action(previous_room)
+
+    def exit():
+        exit_menu = ["North Door", "East Door", "South Door", "West Door"]
+        return super(ZombieRoom, self).exit(self.coord, exit_menu,
+         ZombieRoom)
+
+
+
+
 
 
 class RiddleRoom(Room):
@@ -205,17 +250,21 @@ class Map(object):
 
 
 
-
-
 stats = {
+    'dmg' : 1,
     'str' : 3,
-    'Health' : 14,
-    'MaxHealth' : 120,
+    'initiative' : 50,
+    'health' : 14,
+    'maxHealth' : 120,
     'has_key' : False,
-    'agility' : randint (-3, 3)
+    'agility' : randint (-3, 3),
+    'sword' : False,
+    'name' : 'Player',
+    'alive' : True,
+    'accuracy' : 50
 }
 hero = fn.Character('pepe', stats)
 
 a_map = Map((2, 2))
-eng = Engine(a_map)
+eng = fn.Engine(a_map)
 eng.play()

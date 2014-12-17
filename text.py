@@ -14,6 +14,19 @@ old room, with the sun still shining outside.
 """
 }
 
+key_room = {
+    'intro' : """
+You enter a room that has only two doors. Clearly this is one of the
+corners of the dungeon.
+Looking around you find a big iron key hanging from a wall. This could
+be really important.
+""",
+    'intro_returning' : """
+You return to the room in which you found the key.
+There doesn't seem to be much else aside from rotten chairs and tables.
+"""
+}
+
 health_room = {
     'intro_bottle_full' : """
  You enter a room with a glass flask on a table in the middle.
@@ -151,5 +164,112 @@ You are tempted to loot him, but what could you possibly get?
     'death_by_spider' : """
  The little goblin evades your strikes, it's so little and so fast!
 Finally it leaps to your throat and slices it open.
+""",
+}
+
+ogre_room = {
+    'intro_alive' : """
+ As you enter this room you see a big dumb ogre, cooking what it seems
+to be a rat kebab. When he notices your presence he takes his big wooden
+club and says 'Mogor has human dinner now!'
+""",
+    'returning_alive' : """
+ When you return to the ogre's room, he seems to be happy and exclaims:
+'Hooray! Human dinner come back!'
+""",
+    'returning_dead' : """
+ In the ogre's room his dinner is still cooking. As you pass by the dead
+ogre you consider taking a bite off the rat kebab...
+It smells pretty good...
+""",
+    'death_by_ogre' : """
+ The big ogre squashes you against the floor.
+You are going to make a lovely dinner with mashed potatoes.
+""",
+}
+
+gnome_room = {
+    "intro" : """
+ As you enter the room you smell the strong scent of tobacco.
+Through the smoke you distinguish a small figure lying against a wall.
+It's a gnome!
+"Don't mind me, stranger" he says, "I'm resting my feet, as I had to ran
+away from an ogre who wanted me as his dinner. I see you are lost, so
+I'll give you some advice: there's a way out from the dungeon: a big
+door in one of the dungeon's corners. But to open that door you'll need
+the key that's lying around somewhere, in some room.
+ Now, I'm dreadfully tired, let me sleep, godspeed.
+""",
+    "intro_returning" : """
+ You enter the room in which you found the little gnome. There's still
+some scent of tobacco, but now, the gnome's snoring fills the air.
+"""
+}
+
+riddle_room = {
+    'intro' : """
+ You enter a weird room, full of plants of different and unwordly
+colours. In the middle of the room there is a little old man with a
+stick.
+He asks you:
+""",
+    'intro_returning' : """
+You enter the room with the weird man who asks questions.
+As you pass through the room he waves at you and smiles.
+""",
+    'pass_test' : """
+ Very good! You passed your test, you can go now.
+"""
+}
+
+flamesword_room = {
+    'intro' : """
+As you enter the room a bright light makes you cover your eyes.
+When you get accustomed to the light you see that it's source is
+a flaming sword!
+This will definitely help against the monsters that lurk around here!
+""",
+    'intro_returning' : """
+You return to the room in which you found the flaming sword.
+Without the sword seems pretty boring.
+"""
+}
+
+orc_room = {
+    'intro_alive' : """
+As you enter this room, an orc charges at you.
+No time for introductions, it seems.
+""",
+    'returning_alive' : """
+The orc is still in the room. He looks pretty mad, probably because you
+got away last time...
+""",
+    'returning_dead' : """
+Returning to the room in which you fought the orc, you see no reason for
+staying in it. Why the orc did it, you don't know. Orcs are pretty wild
+and strange creatures.
+""",
+    'death_by_orc' : """
+With an skull shattering cry, the orc attacks.
+Wait, it was not the cry that was skull shattering, it was his axe!
+""",
+}
+
+harpy_room = {
+    'intro_alive' : """
+You enter a room full of feathers flying around. As you do, you hear
+a high pitched scream and a harpy comes down on you, ready to attack.
+""",
+    'returning_alive' : """
+Without wasting time, the harpy attacks you once again as you
+enter the room!
+""",
+    'returning_dead' : """
+You return to the room in which you fought the harpy.
+There are still feathers flying around.
+""",
+    'death_by_harpy' : """
+With lightning speed, the harpy strikes at you with its talons, time
+and time and time again.
 """,
 }

@@ -62,13 +62,15 @@ class Combat(object):
         else:
             print "%s's attack misses!" % self.ch1.name
         
+        print "%s's health is at %d" % (self.ch2.name,
+             self.ch2.stats['health'])
+        print ""
+
         if self.ch2.stats['health'] <= 0:
             self.ch2.stats['alive'] = False
             return self.scene(self.previous_room)
         else:
             pass
-
-        print ""
         
         if (self.ch2.stats['alive'] == True and
             self.ch2.stats['accuracy'] > randint(1, 100)):
@@ -77,7 +79,9 @@ class Combat(object):
                 self.ch2.stats['dmg'])
         else:
             print "%s's attack misses!" % self.ch2.name
-        
+
+        print "%s's health is at %d" % (self.ch1.name,
+             self.ch1.stats['health'])
         print ""
 
         if self.ch1.stats['health'] <= 0:

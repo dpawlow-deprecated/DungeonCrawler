@@ -14,7 +14,7 @@ class Menu(object):
 
 
 class Engine(object):
-    """Runs the game by handing the next room to the player"""
+    """Runs the game by handing the selected room to the player"""
 
     def __init__(self, room_map):
         self.room_map = room_map
@@ -44,7 +44,7 @@ class Combat(object):
     def __init__(self, player, enemy, scene, previous_room):
         self.scene = scene
         self.previous_room = previous_room
-        if player.stats['initiative'] > enemy.stats['initiative']:
+        if player.stats['initiative'] >= enemy.stats['initiative']:
             self.ch1 = player
             self.ch2 = enemy
         else:
@@ -52,6 +52,8 @@ class Combat(object):
             self.ch2 = player
 
     def rounds(self):
+        print ""
+
         if (self.ch1.stats['alive'] == True and 
             self.ch1.stats['accuracy'] > randint(1, 100)):
             self.ch2.stats['health'] -= self.ch1.stats['dmg']
@@ -59,12 +61,28 @@ class Combat(object):
                 self.ch1.stats['dmg'])
         else:
             print "%s's attack misses!" % self.ch1.name
-        if (self.ch1.stats['alive'] == True and
+        
+        if self.ch2.stats['health'] <= 0:
+            self.ch2.stats['alive'] = False
+            return self.scene(self.previous_room)
+        else:
+            pass
+
+        print ""
+        
+        if (self.ch2.stats['alive'] == True and
             self.ch2.stats['accuracy'] > randint(1, 100)):
             self.ch1.stats['health'] -= self.ch2.stats['dmg']
             print "%s takes %d damage!" % (self.ch1.name,
                 self.ch2.stats['dmg'])
         else:
             print "%s's attack misses!" % self.ch2.name
-        print "holi"
+        
+        print ""
+
+        if self.ch1.stats['health'] <= 0:
+            self.ch1.stats['alive'] = False
+        else:
+            pass
+
         return self.scene(self.previous_room)

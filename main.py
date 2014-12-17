@@ -67,10 +67,10 @@ class SwordRoom(Room):
         self.coord = (3, 2)
 
     def enter(self, previous_room):
-        if hero.stats['sword'] == False:
+        if player.stats['sword'] == False:
             print text.sword_room['intro']
-            hero.stats['sword'] = True
-            hero.stats['dmg'] += 5
+            player.stats['sword'] = True
+            player.stats['dmg'] += 5
             return self.exit()
         else:
             print text.sword_room['intro_returning']
@@ -99,7 +99,7 @@ class BladesRoom(Room):
         choice = menu.generate(enter_menu, "What do you do?")
 
         if choice == '1':
-            roll = randint(1, 20) + hero.stats['agility']
+            roll = randint(1, 20) + player.stats['agility']
 
             if roll < 14:
                 print text.blades_room['death']
@@ -120,18 +120,169 @@ class BladesRoom(Room):
 
 class GoblinRoom(Room):
 
+    goblin_stats = {
+    'dmg' : 3,
+    'health' : 5,
+    'initiative' : 70,
+    'accuracy' : 70,
+    'alive' : True
+    }
+
     def __init__(self):
         self.coord = (1, 1)
+        self.goblin = fn.Character('Grexlyx the goblin', self.goblin_stats)
+        self.first_time = True
+
+    def enter(self, previous_room):
+        if self.goblin.stats['alive'] and self.first_time == True:
+            print text.goblin_room['intro_alive']
+            self.first_time = False
+            return self.choose_action(previous_room)
+        elif self.goblin.stats['alive'] and self.first_time == False:
+            print text.goblin_room['returning_alive']
+            return self.choose_action(previous_room)
+        else:
+            print text.goblin_room['returning_dead']
+            return self.exit()
+
+    def choose_action(self, previous_room):
+
+        if (self.goblin.stats['alive'] == True and
+            player.stats['alive'] == True):
+            choice_ls = ['Fight!', 'Run away!']
+            menu = fn.Menu()
+            choice = menu.generate(choice_ls, 'What do you do?')
+
+            if choice == '1':
+                combat = fn.Combat(player, self.goblin, self.choose_action,
+                previous_room)
+                return combat.rounds()
+            elif choice == '2':
+                return previous_room
+            else:
+                return self.choose_action(previous_room)
+        elif player.stats['alive'] == False:
+            print text.goblin_room['death_by_goblin']
+            return (-1, -1)
+        else:
+            print "The goblin is dead!"
+            print ""
+            return self.exit()
+
+    def exit(self):
+        exit_menu = ["North Door", "East Door", "South Door", "West Door"]
+        return super(GoblinRoom, self).exit(self.coord, exit_menu,
+         GoblinRoom)
+
 
 class CodeRoom(Room):
 
     def __init__(self):
         self.coord = (1, 2)
+        self.code_tuple = (str(randint(0, 1)), str(randint(0, 1)),
+         str(randint(0, 1)), str(randint(0, 1)), str(randint(0, 1)))
+        self.code = ''.join(self.code_tuple)
+        self.code_cracked = False
+        self.first_time = True
+
+    def enter(self, previous_room):
+        if self.first_time == True:
+            print text.code_room['first_intro']
+            self.first_time = False
+            return self.choose_action()
+        elif self.code_cracked == False:
+            print text.code_room['intro_returning']
+            return self.choose_action()
+        else:
+            print text.code_room['returning_cracked']
+            return self.exit()
+
+    def choose_action(self):
+        action_ls = ["Fiddle with the levers.", "Exit Room."]
+        menu = fn.Menu()
+        choice = menu.generate(action_ls, "What do you do?")
+        ### CHEAT ###
+        print "### CHEAT ###"
+        print self.code
+        ###
+
+        if choice == '1':
+            print text.code_room['explain_mechanism']
+            print "How do you configure them? (ex: 10101)"
+            code = raw_input('> ')
+
+            if code == self.code:
+                print text.code_room['cracking_code']
+                self.code_cracked = True
+                return self.exit()
+            else:
+                print "This code doesn't seem to do anything."
+                return self.choose_action()
+
+        elif choice == '2':
+            return self.exit()
+        else:
+            return self.choose_action()
+
+    def exit(self):
+        exit_menu = ["North Door", "East Door", "South Door", "West Door"]
+        return super(CodeRoom, self).exit(self.coord, exit_menu,
+         CodeRoom)
 
 class SpiderRoom(Room):
 
+    spider_stats = {
+    'dmg' : 2,
+    'health' : 10,
+    'initiative' : 100,
+    'accuracy' : 70,
+    'alive' : True
+    }
+
     def __init__(self):
         self.coord = (1, 3)
+        self.spider = fn.Character('Shelob the spider', self.spider_stats)
+        self.first_time = True
+
+    def enter(self, previous_room):
+        if self.spider.stats['alive'] and self.first_time == True:
+            print text.spider_room['intro_alive']
+            self.first_time = False
+            return self.choose_action(previous_room)
+        elif self.spider.stats['alive'] and self.first_time == False:
+            print text.spider_room['returning_alive']
+            return self.choose_action(previous_room)
+        else:
+            print text.spider_room['returning_dead']
+            return self.exit()
+
+    def choose_action(self, previous_room):
+
+        if (self.spider.stats['alive'] == True and
+            player.stats['alive'] == True):
+            choice_ls = ['Fight!', 'Run away!']
+            menu = fn.Menu()
+            choice = menu.generate(choice_ls, 'What do you do?')
+
+            if choice == '1':
+                combat = fn.Combat(player, self.spider, self.choose_action,
+                previous_room)
+                return combat.rounds()
+            elif choice == '2':
+                return previous_room
+            else:
+                return self.choose_action(previous_room)
+        elif player.stats['alive'] == False:
+            print text.spider_room['death_by_spider']
+            return (-1, -1)
+        else:
+            print text.spider_room['killing_spider']
+            return self.exit()
+
+    def exit(self):
+        exit_menu = ["North Door", "East Door", "South Door", "West Door"]
+        return super(SpiderRoom, self).exit(self.coord, exit_menu,
+         SpiderRoom)
 
 class HealthRoom(Room):
     """Has a one-use-only health potion."""
@@ -148,7 +299,7 @@ class HealthRoom(Room):
             choice = menu.generate(enter_menu, "What do you do?")
 
             if choice == '1':
-                hero.stats['health'] = hero.stats['maxHealth']
+                player.stats['health'] = player.stats['maxHealth']
                 print text.health_room['drink_potion']
                 self.bottle_full = False 
                 return self.exit()           
@@ -192,27 +343,33 @@ class ZombieRoom(Room):
             return self.exit()
 
     def choose_action(self, previous_room):
-        choice_ls = ['Fight!', 'Run away!']
-        menu = fn.Menu()
-        choice = menu.generate(choice_ls, 'What do you do?')
 
-        if choice == '1':
-            combat = fn.Combat(hero, self.zombie, self.choose_action,
-             previous_room)
-            combat.rounds()
-        elif choice == '2':
-            return previous_room
+        if (self.zombie.stats['alive'] == True and
+            player.stats['alive'] == True):
+            choice_ls = ['Fight!', 'Run away!']
+            menu = fn.Menu()
+            choice = menu.generate(choice_ls, 'What do you do?')
+
+            if choice == '1':
+                combat = fn.Combat(player, self.zombie, self.choose_action,
+                previous_room)
+                return combat.rounds()
+            elif choice == '2':
+                return previous_room
+            else:
+                return self.choose_action(previous_room)
+        elif player.stats['alive'] == False:
+            print text.zombie_room['death_by_zombie']
+            return (-1, -1)
         else:
-            return self.choose_action(previous_room)
+            print "The zombie is dead!"
+            print ""
+            return self.exit()
 
-    def exit():
+    def exit(self):
         exit_menu = ["North Door", "East Door", "South Door", "West Door"]
         return super(ZombieRoom, self).exit(self.coord, exit_menu,
          ZombieRoom)
-
-
-
-
 
 
 class RiddleRoom(Room):
@@ -242,28 +399,29 @@ class Map(object):
         val = Map.rooms.get(room_coord)
         return val
 
-#    def previous_room(self, next_coord, prev_coord):
+  #  def opening_room(self):
+   #     return self.next_room(self.starting_room)
 
 
-    def opening_room(self):
-        return self.next_room(self.starting_room)
-
-
+print "Hey, there, adveturer!"
+print "What's your name?"
+player_name = raw_input('> ')
 
 stats = {
     'dmg' : 1,
     'str' : 3,
     'initiative' : 50,
-    'health' : 14,
+    'health' : 20,
     'maxHealth' : 120,
     'has_key' : False,
     'agility' : randint (-3, 3),
     'sword' : False,
     'name' : 'Player',
     'alive' : True,
-    'accuracy' : 50
+    'accuracy' : 50,
+    'has_diamond' : False
 }
-hero = fn.Character('pepe', stats)
+player = fn.Character(player_name, stats)
 
 a_map = Map((2, 2))
 eng = fn.Engine(a_map)

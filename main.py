@@ -178,10 +178,11 @@ class RiddleRoom(Room):
     
     def __init__(self):
         self.coord = (1, 4)
-        first_visit = True
+        self.first_visit = True
 
     def enter(self, previous_room):
-        if first_visit == True:
+        if self.first_visit == True:
+            self.first_visit = False
             print text.riddle_room['intro']
             print "What's your name?"
             name = raw_input('> ')

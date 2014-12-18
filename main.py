@@ -88,7 +88,7 @@ class ExitRoom(Room):
         self.coord = (0, 4)
         self.first_visit = True
 
-    def enter(self):
+    def enter(self, previous_room):
         if self.first_visit == True and player.stats['has_key'] == True:
             print text.exit_room['intro_with_key']
             exit(1)

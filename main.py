@@ -563,10 +563,10 @@ class PitRoom(Room):
         else:
             print text.pit_room['returning']
 
-        return self.choose_action()
+        return self.choose_action(previous_room)
         
 
-    def choose_action(self):
+    def choose_action(self, previous_room):
         enter_menu = ["Try to jump through the pit.", "Run away!"]
         menu = fn.Menu()
         choice = menu.generate(enter_menu, "What do you do?")

@@ -27,6 +27,36 @@ There doesn't seem to be much else aside from rotten chairs and tables.
 """
 }
 
+exit_room = {
+    'intro_no_key' : """
+You enter a room with a massive iron door on one of the walls.
+Looking through the big keyhole you can get some peeks of sunshine and
+fresh air. This must be the way out!
+You push the door but it's locked. You look around the room for the key
+but it's nowhere to be found.
+After a while, you decide that the key must be in another room, time to
+go looking for it.
+""",
+    'intro_with_key' : """
+You enter a room with a massive iron door on one of the walls.
+Looking through the big keyhole you can get some peeks of sunshine and
+fresh air. This must be the way out!
+You fit the key in the lock and turn it...
+Clank!
+You are free!
+""",
+    'returning_with_key' : """
+You return to the room with the massive iron door.
+You fit the key in the lock and turn it...
+Clank!
+You are free!
+""",
+    'returning_no_key' : """
+You return to the room with the massive iron door, but you still hadn't
+found the key. It must be somewhere around this dungeon!
+"""
+}
+
 health_room = {
     'intro_bottle_full' : """
  You enter a room with a glass flask on a table in the middle.
@@ -60,6 +90,33 @@ You narrowly make it through, your heart is racing.
 """
 }
 
+paintings_room = {
+    'intro_no_sword' : """
+You enter a pitch black room. Stumbling about, you eventually find
+the way out.
+""",
+    'intro_has_sword' : """
+You enter a room submerged in darkness, but drawing your flaming sword
+you have your very own light source!
+Hanging on the walls you see marvelous paintings with golden frames.
+There are depictions of dragons, landscapes and kings long forgotten.
+And you keep wondering what kind of lost stories this place could
+unravel.
+""",
+    'returning_no_sword' : """
+You enter once again to the pitch black room. You stumble again to
+the exit.
+""",
+    'returning_has_sword' : """
+You enter once again to the pitch black room, but drawing your flaming sword
+you have your very own light source!
+Hanging on the walls you see marvelous paintings with golden frames.
+There are depictions of dragons, landscapes and kings long forgotten.
+And you keep wondering what kind of lost stories this place could
+unravel.
+"""
+}
+
 sword_room = {
     'intro' : """
  You enter a room with walls covered in old and rusty armor. There are
@@ -71,6 +128,60 @@ Now you have a sword! It will surely be of some use.
     'intro_returning' : """
  You enter to the old armory once again. So many unanswered questions.
 Who owned this place?
+"""
+}
+
+random_potion_room = {
+    'intro' : """
+You enter a room full shattered glass throughout the floor. It seems to
+be from various laboratory equipment, this must've been an alchemy lab!
+There remains a lonely bottle, with a transparent liquid inside and no
+label. What could be the effect of this brew?
+""",
+    'returning_bottle_full' : """
+You return to the alchemy lab. The bottle beckons you to drink it.
+""",
+    'returning_bottle_empty' : """
+You return to the alchemy lab, there are no more bottles for you to
+drink.
+""",
+    'drinking_venom' : """
+You drink from the bottle. Moments later you begin to feel ill, drop to
+the floor and draw your last breath.
+It was venom! 
+""",
+    'drinking_fortify' : """
+You drink from the bottle. Moments later you begin to feel fortified.
+Your maximum health has doubled!
+""",
+    'drinking_shrink' : """
+You drink from the bottle. Moments later you begin to feel less
+powerful. Your damage is reduced by half.
+""",
+    'drinking_double_damage' : """
+You drink from the bottle. Moments later you begin to feel more
+powerful. Your damage is doubled!
+"""
+}
+
+hamster_room = {
+    'intro' : """
+You enter a room that doesn't seem to have anything special.
+Looking down you find a little hamster running around your feet.
+When you kneel beside it, it climbs to your pocket and sticks its
+head out.
+"""
+}
+
+treasure_room = {
+    'intro' : """
+You enter a room with broken chests and rusted iron bars. This must've
+been the Treasury.
+Removing some debris you found a few gold coins!
+You pocket them, thinking that this dungeon could make you rich!
+""",
+    'returning' : """
+You return to the Treasury, but sadly there's no more gold to be found.
 """
 }
 
@@ -271,5 +382,54 @@ There are still feathers flying around.
     'death_by_harpy' : """
 With lightning speed, the harpy strikes at you with its talons, time
 and time and time again.
+""",
+}
+
+hunter_room = {
+    'intro' : """
+You enter a room with a lot of rubble in it. Between some boulders you
+see a man looking for something on the floor.
+""",
+    'returning_alive' : """
+You return to the room in which you found the treasure hunter.
+""",
+    'returning_dead' : """
+You return to the room in which you fought the treasure hunter.
+Shame he hadn't found any treasure you could loot off him.
+""",
+    'hostile' : """
+Seeing as you have some treasure in your pocket, the treasure hunter
+leaps at you with a scream.
+""",
+    'indifferent' : """
+You don't seem to interest the treasure hunter. Probably because you
+aren't made of gold.
+""",
+    'death_by_hunter' : """
+Even before you exhale your last breath, the treasure hunter begins
+to check your pockets for gold.
+""",
+    'give_gold' : """
+You give all your treasure to the treaure hunter, which seems to appease
+him. He returns to his scavenging and you are now free to go.
+"""
+}
+
+dragon_room = {
+    'intro_alive' : """
+As you enter this sulphur smelling room you see A DRAGON!
+A LIVING DRAGON!
+IT'S WAKING UP! QUICK, RUN AWAY!!!
+""",
+    'returning_alive' : """
+HOW COULD YOU COME BACK? DIDN'T YOU SEE THAT THERE WAS A BLOODY DRAGON
+IN HERE? RUN!
+""",
+    'returning_dead' : """
+How did you manage to kill the dragon?!?
+""",
+    'death_by_dragon' : """
+The dragon cooks you up with his fiery breath and then eats you whole.
+I warned you, but you are dumb as a brick.
 """,
 }

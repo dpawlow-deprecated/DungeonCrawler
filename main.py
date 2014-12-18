@@ -29,6 +29,10 @@ class Death(Room):
 
     def enter(self, previous_room):
         print "You died."
+        if player.stats['hamster_found'] == True:
+            print "%s is sad." % player.stats['hamster_name']
+        else:
+            pass
         exit(1)
 
 class StartingRoom(Room):
@@ -82,9 +86,34 @@ class ExitRoom(Room):
     
     def __init__(self):
         self.coord = (0, 4)
+        self.first_visit = True
 
     def enter(self):
-        pass
+        if self.first_visit == True and player.stats['has_key'] == True:
+            print text.exit_room['intro_with_key']
+            exit(1)
+        elif self.first_visit == True and player.stats['has_key'] == False:
+            print text.exit_room['intro_no_key']
+            return self.exit()
+        elif self.first_visit == False and player.stats['has_key'] == False:
+            print text.exit_room['returning_no_key']
+            return self.exit()
+        else:
+            print text.exit_room['returning_with_key']
+            exit(1)
+
+    def exit(self):
+        menu = fn.Menu()
+        menu_ls = ['East Door', 'South Door']
+        choice = menu.generate(menu_ls, "Which door do you take?")
+
+        if choice == '1':
+            return (self.coord[0] + 1, self.coord[1])
+        elif choice == '2':
+            return (self.coord[0], self.coord[1] - 1)
+        else:
+            print "Try again."
+            return self.exit()
 
 class SwordRoom(Room):
 
@@ -358,6 +387,264 @@ class GnomeRoom(Room):
             print "Try again."
             return self.exit()
 
+class TeleportRoom1(Room):
+
+    def __init__(self):
+        self.coord = (0, 1)
+    
+    def enter(self, previous_room):
+        print ""
+        print "With a flash, the room shifts and you feel dizzy."
+        print "You've been teleported to another room! Witchcraft!"
+        print ""
+        tp = TeleportRoom2()
+        return tp.exit()
+
+    def exit(self):
+        menu = fn.Menu()
+        menu_ls = ['North Door', 'East Door', 'South Door']
+        choice = menu.generate(menu_ls, "Which door do you take?")
+
+        if choice == '1':
+            return (self.coord[0], self.coord[1] + 1)
+        elif choice == '2':
+            return (self.coord[0] + 1, self.coord[1])
+        elif choice == '3':
+            return (self.coord[0], self.coord[1] - 1)
+        else:
+            print "Try again."
+            return self.exit()
+
+class TeleportRoom2(Room):
+
+    def __init__(self):
+        self.coord = (3, 0)
+
+    def enter(self, previous_room):
+        print ""
+        print "With a flash, the room shifts and you feel dizzy."
+        print "You've been teleported to another room! Witchcraft!"
+        print ""
+        tp = TeleportRoom1()
+        return tp.exit()
+
+    def exit(self):
+        menu = fn.Menu()
+        menu_ls = ['North Door', 'East Door', 'South Door']
+        choice = menu.generate(menu_ls, "Which door do you take?")
+
+        if choice == '1':
+            return (self.coord[0], self.coord[1] + 1)
+        elif choice == '2':
+            return (self.coord[0] + 1, self.coord[1])
+        elif choice == '3':
+            return (self.coord[0], self.coord[1] - 1)
+        else:
+            print "Try again."
+            return self.exit()
+
+class PaintingsRoom(Room):
+
+    def __init__(self):
+        self.coord = (1, 0)
+        self.first_visit = True
+
+    def enter(self, previous_room):
+        if (player.stats['has_flame_sword'] == False and
+             self.first_visit == True):
+            print text.paintings_room['intro_no_sword']
+        elif (player.stats['has_flame_sword'] == True and
+             self.first_visit == True):
+            print text.paintings_room['intro_has_sword']
+        elif (player.stats['has_flame_sword'] == True and
+             self.first_visit == False):
+            print text.paintings_room['returning_has_sword']
+        else:
+            print text.paintings_room['returning_no_sword']
+
+        return self.exit()
+
+    def exit(self):
+        menu = fn.Menu()
+        menu_ls = ['North Door', 'East Door', 'West Door']
+        choice = menu.generate(menu_ls, "Which door do you take?")
+
+        if choice == '1':
+            return (self.coord[0], self.coord[1] + 1)
+        elif choice == '2':
+            return (self.coord[0] + 1, self.coord[1])
+        elif choice == '3':
+            return (self.coord[0] - 1, self.coord[1])
+        else:
+            print "Try again."
+            return self.exit()
+
+class RandomPotionRoom(Room):
+    
+    def __init__(self):
+        self.coord = (4, 4)
+        self.first_visit = True
+        self.potion_full = True
+
+    def enter(self, previous_room):
+        if self.first_visit == True and self.potion_full == True:
+            self.first_visit = False
+            print text.random_potion_room['intro']
+            return self.choose_action()
+        elif self.first_visit == False and self.potion_full == True:
+            print text.random_potion_room['returning_bottle_full']
+            return self.choose_action()
+        elif self.first_visit == False and self.potion_full == False:
+            print text.random_potion_room['returning_bottle_empty']
+            return self.exit()
+
+    def choose_action(self):
+        potion = randint(1, 4)
+        print ""
+  
+        if potion == 1:
+            print text.random_potion_room['drinking_venom']
+            return (-1, -1)
+        elif potion == 2:
+            print text.random_potion_room['drinking_fortify']
+            player.stats['maxHealth'] *= 2
+            player.stats['health'] = player.stats['maxHealth']
+            print "Your health is now at %d" % player.stats['health']
+            return self.exit()
+        elif potion == 3:
+            print text.random_potion_room['drinking_shrink']
+            player.stats['dmg'] /= 2
+            print "Your damage is now %d" % player.stats['dmg']
+            return self.exit()
+        else:
+            print text.random_potion_room['drinking_double_damage']
+            player.stats['dmg'] *= 2
+            print "Your damage is now %d" % player.stats['dmg']
+            return self.exit()
+
+        print ""
+
+    def exit(self):
+        menu = fn.Menu()
+        menu_ls = ['South Door', 'West Door']
+        choice = menu.generate(menu_ls, "Which door do you take?")
+
+        if choice == '1':
+            return (self.coord[0], self.coord[1] - 1)
+        elif choice == '2':
+            return (self.coord[0] - 1, self.coord[1])
+        else:
+            print "Try again."
+            return self.exit()
+
+class PitRoom(Room):
+
+    def __init__(self):
+        self.coord = (3, 4)
+
+    def enter(self, previous_room):
+        print text.pit_room['intro']
+        enter_menu = ["Try to jump through the pit.", "Run away!"]
+        menu = fn.Menu()
+        choice = menu.generate(enter_menu, "What do you do?")
+
+        if choice == '1':
+            roll = randint(1, 20) + player.stats['agility']
+
+            if roll < 10:
+                print text.pit_room['death']
+                return (-1, -1)
+            else:
+                print text.pit_room['pass_through']
+                return self.exit()
+        
+        elif choice == '2':
+            return previous_room
+        else:
+            self.enter(previous_room)
+
+    def exit(self):
+        menu = fn.Menu()
+        menu_ls = ['East Door', 'South Door', 'West Door']
+        choice = menu.generate(menu_ls, "Which door do you take?")
+
+        if choice == '1':
+            return (self.coord[0] + 1, self.coord[1])
+        elif choice == '2':
+            return (self.coord[0], self.coord[1] - 1)
+        elif choice == '3':
+            return (self.coord[0] - 1, self.coord[1])
+        else:
+            print "Try again."
+            return self.exit()
+
+class HamsterRoom(Room):
+
+    def __init__(self):
+        self.coord = (0, 3)
+        self.first_visit = True
+
+    def enter(self, previous_room):
+        if self.first_visit == True:
+            self.first_visit = False
+            player.stats['hamster_found'] = True
+            print text.hamster_room['intro']
+            print "How will you name it?"
+            name = raw_input('> ')
+            player.stats['hamster_name'] = '%s the space hamster' % name
+            return self.exit()
+        else:
+            print ("You enter the room in which you found %s." % 
+             player.stats['hamster_name'])
+            print "There's nothing else here."
+            return self.exit()
+
+    def exit(self):
+        menu = fn.Menu()
+        menu_ls = ['North Door', 'East Door', 'South Door']
+        choice = menu.generate(menu_ls, "Which door do you take?")
+
+        if choice == '1':
+            return (self.coord[0], self.coord[1] + 1)
+        elif choice == '2':
+            return (self.coord[0] + 1, self.coord[1])
+        elif choice == '3':
+            return (self.coord[0], self.coord[1] - 1)
+        else:
+            print "Try again."
+            return self.exit()
+
+class TreasureRoom(Room):
+
+    def __init__(self):
+        self.coord = (4, 3)
+        self.first_visit = True
+
+    def enter(self, previous_room):
+        if self.first_visit == True:
+            print text.treasure_room['intro']
+            self.first_visit = False
+            player.stats['has_gold'] = True
+            return self.exit()
+        else:
+            print text.treasure_room['returning']
+            return self.exit()
+
+    def exit(self):
+        menu = fn.Menu()
+        menu_ls = ['North Door', 'South Door', 'West Door']
+        choice = menu.generate(menu_ls, "Which door do you take?")
+
+        if choice == '1':
+            return (self.coord[0], self.coord[1] + 1)
+        elif choice == '2':
+            return (self.coord[0], self.coord[1] - 1)
+        elif choice == '3':
+            return (self.coord[0] - 1, self.coord[1])
+        else:
+            print "Try again."
+            return self.exit()
+
 # Combat rooms below this line.
 
 class SpiderRoom(Room):
@@ -529,9 +816,81 @@ class ZombieRoom(Room):
 
 class HunterRoom(Room):
 
+    hunter_stats = {
+    'dmg' : 1,
+    'health' : 14,
+    'initiative' : 20,
+    'accuracy' : 20,
+    'alive' : True
+    }
+
     def __init__(self):
         self.coord = (3, 1)
+        self.first_visit = True
+        self.hostile = False
+        self.hunter = fn.Character('Rob the treasure hunter',
+             self.hunter_stats)
+        self.first_time = True
 
+    def enter(self, previous_room):
+
+        if (player.stats['has_gold'] == True or
+             player.stats['has_diamond'] == True):
+            self.hostile = True
+        else:
+            self.hostile = False
+
+        if self.hunter.stats['alive'] and self.first_visit == True:
+            print text.hunter_room['intro']
+            self.first_visit = False
+        elif self.hunter.stats['alive'] and self.first_visit == False:
+            print text.hunter_room['returning_alive']
+        else:
+            print text.hunter_room['returning_dead']
+            return self.exit()
+
+        if self.hostile == True:
+            print text.hunter_room['hostile']
+            return self.choose_action()
+        else:
+            print text.hunter_room['indifferent']
+            return self.exit()
+
+    def choose_action(self):
+
+        if (self.hunter.stats['alive'] == True and
+            player.stats['alive'] == True):
+            choice_ls = ['Give him the treasure', 'Fight!', 'Run away!']
+            menu = fn.Menu()
+            choice = menu.generate(choice_ls, 'What do you do?')
+
+            if choice == '1':
+                player.stats['has_diamond'] = False
+                player.stats['has_gold'] = False
+                self.hostile = False
+                print text.hunter_room['give_gold']
+                return self.exit()
+            elif choice == '2':
+                combat = fn.Combat(player, self.hunter, self.choose_action,
+                previous_room)
+                return combat.rounds()
+            elif choice == '3':
+                return previous_room
+            else:
+                return self.choose_action(previous_room)
+        elif player.stats['alive'] == False:
+            print text.hunter_room['death_by_hunter']
+            return (-1, -1)
+        else:
+            print "The treasure hunter is dead!"
+            print ""
+            return self.exit()
+
+    def exit(self):
+        exit_menu = ["North Door", "East Door", "South Door", "West Door"]
+        return super(HunterRoom, self).exit(self.coord, exit_menu,
+         HunterRoom)
+ 
 class OgreRoom(Room):
 
     ogre_stats = {
@@ -731,7 +1090,71 @@ class HarpyRoom(Room):
             return self.exit()
 
 class DragonRoom(Room):
-    pass
+
+    dragon_stats = {
+    'dmg' : 100,
+    'health' : 100,
+    'initiative' : 100,
+    'accuracy' : 50,
+    'alive' : True
+    }
+
+    def __init__(self):
+        self.coord = (4, 2)
+        self.dragon = fn.Character('Smaug the dragon', self.dragon_stats)
+        self.first_time = True
+
+    def enter(self, previous_room):
+        if self.dragon.stats['alive'] and self.first_time == True:
+            print text.dragon_room['intro_alive']
+            self.first_time = False
+            return self.choose_action(previous_room)
+        elif self.dragon.stats['alive'] and self.first_time == False:
+            print text.dragon_room['returning_alive']
+            return self.choose_action(previous_room)
+        else:
+            print text.dragon_room['returning_dead']
+            return self.exit()
+
+    def choose_action(self, previous_room):
+
+        if (self.dragon.stats['alive'] == True and
+            player.stats['alive'] == True):
+            choice_ls = ['Fight!', 'LEG IT!!!']
+            menu = fn.Menu()
+            choice = menu.generate(choice_ls, 'What do you do?')
+
+            if choice == '1':
+                combat = fn.Combat(player, self.dragon, self.choose_action,
+                previous_room)
+                return combat.rounds()
+            elif choice == '2':
+                return previous_room
+            else:
+                return self.choose_action(previous_room)
+        elif player.stats['alive'] == False:
+            print text.dragon_room['death_by_dragon']
+            return (-1, -1)
+        else:
+            print "You?! Killed a DRAGON?!?"
+            print ""
+            return self.exit()
+
+    def exit(self):
+        menu = fn.Menu()
+        menu_ls = ['North Door', 'East Door', 'West Door']
+        choice = menu.generate(menu_ls, "Which door do you take?")
+
+        if choice == '1':
+            return (self.coord[0], self.coord[1] + 1)
+        elif choice == '2':
+            return (self.coord[0] + 1, self.coord[1])
+        elif choice == '3':
+            return (self.coord[0] - 1, self.coord[1])
+        else:
+            print "Try again."
+            return self.exit()
+
 
 ###
 
@@ -739,8 +1162,11 @@ class Map(object):
 
     rooms = {
         (0, 0) : KeyRoom(),
+        (0, 1) : TeleportRoom1(),
         (0, 2) : DragonRoom(),
+        (0, 3) : HamsterRoom(),
         (0, 4) : ExitRoom(),
+        (1, 0) : PaintingsRoom(),
         (1, 1) : GoblinRoom(),
         (1, 2) : CodeRoom(),
         (1, 3) : SpiderRoom(),
@@ -750,12 +1176,16 @@ class Map(object):
         (2, 2) : StartingRoom(),
         (2, 3) : HealthRoom(),
         (2, 4) : HarpyRoom(),
+        (3, 0) : TeleportRoom2(),
         (3, 1) : HunterRoom(),
         (3, 2) : SwordRoom(),
         (3, 3) : ZombieRoom(),
+        (3, 4) : PitRoom(),
         (4, 0) : FlameSwordRoom(),
         (4, 1) : GnomeRoom(),
         (4, 2) : OgreRoom(),
+        (4, 3) : TreasureRoom(),
+        (4, 4) : RandomPotionRoom(),
         (-1, -1) : Death()
     }
 
@@ -784,12 +1214,15 @@ stats = {
     'agility' : randint (-3, 3),
     'health' : 20,
     'maxHealth' : 20,
+    'alive' : True,
     'has_key' : False,
     'has_sword' : False,
     'has_flame_sword' : False,
-    'alive' : True,
+    'has_gold' : False,
     'has_diamond' : False,
-    'favourite_colour' : favourite_colour
+    'favourite_colour' : favourite_colour,
+    'hamster_found' : False,
+    'hamster_name' : ' '
 }
 
 player = fn.Character(player_name, stats)

@@ -542,9 +542,15 @@ class PitRoom(Room):
 
     def __init__(self):
         self.coord = (3, 4)
+        self.first_visit = True
 
     def enter(self, previous_room):
-        print text.pit_room['intro']
+        if self.first_visit == True:
+            self.first_visit = False
+            print text.pit_room['intro']
+        else:
+            print text.pit_room['returning']
+        
         enter_menu = ["Try to jump through the pit.", "Run away!"]
         menu = fn.Menu()
         choice = menu.generate(enter_menu, "What do you do?")
@@ -562,7 +568,7 @@ class PitRoom(Room):
         elif choice == '2':
             return previous_room
         else:
-            self.enter(previous_room)
+            return self.enter(previous_room)
 
     def exit(self):
         menu = fn.Menu()
@@ -1036,7 +1042,7 @@ class HarpyRoom(Room):
 
     def __init__(self):
         self.coord = (4, 2)
-        self.harpy = fn.Character('Grunt the harpy', self.harpy_stats)
+        self.harpy = fn.Character('Gaz the harpy', self.harpy_stats)
         self.first_time = True
 
     def enter(self, previous_room):

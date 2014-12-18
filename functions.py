@@ -1,5 +1,6 @@
 from random import randint
 
+
 class Menu(object):
     """Generates all the menus that are needed in the game"""
 
@@ -24,7 +25,7 @@ class Engine(object):
         exit_room = self.room_map.rooms[(0, 4)]
         prev_room_coord = (2, 2)
 
-        while current_room != exit_room or hero.has_key == False:
+        while current_room != exit_room or player.stats['has_key'] == False:
             # The previous room coordinates are given mainly for the
             # "run away!" functionality.        
             next_room_coord = current_room.enter(prev_room_coord)

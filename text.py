@@ -454,5 +454,4 @@ After a looooong fall you squash against the ground.
     'pass_through' : """
 You jump just far enough to get to the other side!
 """
-
 }

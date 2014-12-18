@@ -991,7 +991,7 @@ class OrcRoom(Room):
     }
 
     def __init__(self):
-        self.coord = (4, 2)
+        self.coord = (2, 0)
         self.orc = fn.Character('Grunt the orc', self.orc_stats)
         self.first_time = True
 
@@ -1057,7 +1057,7 @@ class HarpyRoom(Room):
     }
 
     def __init__(self):
-        self.coord = (4, 2)
+        self.coord = (2, 4)
         self.harpy = fn.Character('Gaz the harpy', self.harpy_stats)
         self.first_time = True
 

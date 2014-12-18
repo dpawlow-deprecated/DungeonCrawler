@@ -500,6 +500,18 @@ class RandomPotionRoom(Room):
             return self.exit()
 
     def choose_action(self):
+        action_menu = ['Drink from the bottle.', 'Exit the Room.']
+        menu = fn.Menu()
+        choice = menu.generate(action_menu, 'What do you do?')
+
+        if choice == '1':
+            return self.drink_potion()
+        elif choice == '2':
+            return self.exit()
+        else:
+            return self.choose_action()
+
+    def drink_potion(self):
         potion = randint(1, 4)
         print ""
   
@@ -550,7 +562,11 @@ class PitRoom(Room):
             print text.pit_room['intro']
         else:
             print text.pit_room['returning']
+
+        return self.choose_action()
         
+
+    def choose_action(self):
         enter_menu = ["Try to jump through the pit.", "Run away!"]
         menu = fn.Menu()
         choice = menu.generate(enter_menu, "What do you do?")

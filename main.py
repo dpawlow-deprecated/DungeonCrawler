@@ -874,12 +874,12 @@ class HunterRoom(Room):
 
         if self.hostile == True:
             print text.hunter_room['hostile']
-            return self.choose_action()
+            return self.choose_action(previous_room)
         else:
             print text.hunter_room['indifferent']
             return self.exit()
 
-    def choose_action(self):
+    def choose_action(self, previous_room):
 
         if (self.hunter.stats['alive'] == True and
             player.stats['alive'] == True):

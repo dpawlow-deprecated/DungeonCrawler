@@ -419,7 +419,8 @@ dragon_room = {
     'intro_alive' : """
 As you enter this sulphur smelling room you see A DRAGON!
 A LIVING DRAGON!
-IT'S WAKING UP! QUICK, RUN AWAY!!!
+IT'S WAKING UP! 
+QUICK, RUN AWAY!!!
 """,
     'returning_alive' : """
 HOW COULD YOU COME BACK? DIDN'T YOU SEE THAT THERE WAS A BLOODY DRAGON
@@ -432,4 +433,26 @@ How did you manage to kill the dragon?!?
 The dragon cooks you up with his fiery breath and then eats you whole.
 I warned you, but you are dumb as a brick.
 """,
+}
+
+pit_room = {
+    'intro' : """
+You enter a room with a bottomless pit! Who on their right mind could
+build this room?
+You'll have to jump to get to the other side of the pit to get to the
+other doors.
+""",
+    'returning' : """
+You return to the room with the bottomless pit.
+Would you jump this time?
+""",
+    'death' : """
+You try to jump to the other side but you can't get a good footing.
+You fall backward into the pit!
+After a looooong fall you squash against the ground.
+""",
+    'pass_through' : """
+You jump just far enough to get to the other side!
+"""
+
 }

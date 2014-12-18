@@ -25,7 +25,8 @@ class Engine(object):
         exit_room = self.room_map.rooms[(0, 4)]
         prev_room_coord = (2, 2)
 
-        while current_room != exit_room or player.stats['has_key'] == False:
+        #while current_room != exit_room or player.stats['has_key'] == False:
+        while True:
             # The previous room coordinates are given mainly for the
             # "run away!" functionality.        
             next_room_coord = current_room.enter(prev_room_coord)
